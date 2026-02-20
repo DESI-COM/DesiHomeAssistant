@@ -1,0 +1,17 @@
+{
+    "domain": "desi",
+    "name": "Desi Smart",
+    "version": "1.0.2",
+    "codeowners": [
+        "@CakirsSeyma"
+    ],
+    "config_flow": true,
+    "documentation": "https://www.home-assistant.io/integrations/desi",
+    "iot_class": "cloud_push",
+    "dependencies": [
+        "http"
+    ],
+    "requirements": [
+        "PyJWT"
+    ]
+}
