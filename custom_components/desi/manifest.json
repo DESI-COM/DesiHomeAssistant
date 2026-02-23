@@ -1,18 +1,17 @@
 {
     "domain": "desi",
     "name": "Desi Smart",
-    "version": "1.0.0",
     "codeowners": [
         "@CakirsSeyma"
     ],
-    "documentation": "https://github.com/DESI-COM/DesiHomeAssistant",
-    "issue_tracker": "https://github.com/DESI-COM/DesiHomeAssistant/issues",
     "config_flow": true,
-    "iot_class": "cloud_push",
     "dependencies": [
         "http"
     ],
+    "documentation": "https://github.com/DESI-COM/DesiHomeAssistant",
+    "iot_class": "cloud_push",
     "requirements": [
         "PyJWT"
-    ]
+    ],
+    "version": "1.0.2"
 }

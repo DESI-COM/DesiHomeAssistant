@@ -11,11 +11,14 @@ from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers import config_entry_oauth2_flow
+import homeassistant.helpers.config_validation as cv
 
 from .const import AUTH_URI, DOMAIN, FULLFILMENT_API_URI, TOKEN_URI
 from .gateway import DesiGateway
 
 _LOGGER = logging.getLogger(__name__)
+
+CONFIG_SCHEMA = cv.config_entry_only_config_schema
 
 
 PLATFORMS: list[Platform] = [
