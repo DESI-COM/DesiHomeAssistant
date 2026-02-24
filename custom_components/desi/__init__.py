@@ -23,6 +23,7 @@ PLATFORMS: list[Platform] = [
     Platform.LOCK,
     Platform.ALARM_CONTROL_PANEL,
     Platform.SWITCH,
+    Platform.SENSOR
 ]
 
 
@@ -71,11 +72,25 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         _LOGGER.warning("No TOKEN found in the session!")
 
     try:
+        _LOGGER.debug("Fetching devices from Desi API...")
+        resp = await session.async_request("POST", f"{FULLFILMENT_API_URI}/get-locks")
+        resp.raise_for_status()
+        json_data = await resp.json()
+        devices = json_data.get("data", {}).get("locks", [])
+        _LOGGER.debug("Successfully fetched %s devices.", len(devices))
+    except Exception as err:
+        _LOGGER.error("Failed to fetch locks from API during setup: %s", err)
+        raise ConfigEntryNotReady("Could not fetch devices from API") from err
+
+    try:
         _LOGGER.debug("Initializing Gateway class...")
         gateway = DesiGateway(hass, session)
 
-        # Store session and gateway in hass.data for use by platforms
-        hass.data[DOMAIN][entry.entry_id] = {"session": session, "gateway": gateway}
+        hass.data[DOMAIN][entry.entry_id] = {
+            "session": session,
+            "gateway": gateway,
+            "devices": devices
+        }
 
         _LOGGER.debug("Creating background task (WebSocket listen)...")
         entry.async_create_background_task(hass, gateway.start_listen(), "desi_ws_loop")

@@ -22,4 +22,4 @@ SOCKET_PATH = "/api/third_part_devices/ds/home_assistant/ws"
 WS_URL = API_URL + SOCKET_PATH
 
 
-PLATFORMS = [Platform.LOCK, Platform.ALARM_CONTROL_PANEL, Platform.SWITCH]
+PLATFORMS = [Platform.LOCK, Platform.ALARM_CONTROL_PANEL, Platform.SWITCH, Platform.SENSOR]

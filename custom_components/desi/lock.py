@@ -9,6 +9,7 @@ from homeassistant.components.lock import LockEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError
+from homeassistant.helpers.dispatcher import async_dispatcher_send
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.restore_state import RestoreEntity
 
@@ -77,6 +78,8 @@ class DesiLock(LockEntity, RestoreEntity):
 
             self.async_write_ha_state()
 
+            async_dispatcher_send(self.hass, f"update_{self._device_id}")
+
     @property
     def device_info(self):
         """Return device registry information for Home Assistant."""
@@ -126,6 +129,7 @@ class DesiLock(LockEntity, RestoreEntity):
                     self._data = lock
                     self._is_locking = False
                     self._is_unlocking = False
+                    async_dispatcher_send(self.hass, f"update_{self._device_id}")
                     break
         except Exception:
             _LOGGER.exception("Error: %s")
