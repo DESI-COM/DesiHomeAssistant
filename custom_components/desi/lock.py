@@ -90,6 +90,7 @@ class DesiLock(LockEntity, RestoreEntity):
             "model": self._data.get("deviceModel"),
             "sw_version": self._data.get("firmwareVersion"),
             "hw_version": self._data.get("hardwareVersion"),
+            "suggested_area": self._data.get("deviceName")
         }
 
     @property

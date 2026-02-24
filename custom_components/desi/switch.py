@@ -63,7 +63,8 @@ class DesiSwitch(SwitchEntity, RestoreEntity):
             "identifiers": {(DOMAIN, self._device_id)},
             "name": self._data.get("deviceName", "Desi Switch"),
             "manufacturer": "Desi Smart Lock and Security Systems",
-            "model": self._data.get("deviceModel")
+            "model": self._data.get("deviceModel"),
+            "suggested_area": self._data.get("deviceName")
         }
 
     async def async_added_to_hass(self):
