@@ -85,9 +85,4 @@ class DesiBatterySensor(SensorEntity, RestoreEntity):
         """Return device registry information."""
         return {
             "identifiers": {(DOMAIN, self._device_id)},
-            "manufacturer": "Desi Smart Lock and Security Systems",
-            "model": self._data.get("deviceModel"),
-            "sw_version": self._data.get("firmwareVersion"),
-            "hw_version": self._data.get("hardwareVersion"),
-            "suggested_area": self._data.get("deviceName")
         }
