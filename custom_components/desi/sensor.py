@@ -8,7 +8,7 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import PERCENTAGE, EntityCategory
+from homeassistant.const import PERCENTAGE
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -28,7 +28,6 @@ async def async_setup_entry(
     data_pack = hass.data[DOMAIN][entry.entry_id]
     session = data_pack["session"]
     gateway = data_pack["gateway"]
-
     devices = data_pack.get("devices", [])
 
     if not devices:
@@ -61,7 +60,6 @@ class DesiBatterySensor(SensorEntity, RestoreEntity):
     async def async_added_to_hass(self) -> None:
         """Register callbacks when entity is added to Home Assistant."""
         await super().async_added_to_hass()
-
         self.async_on_remove(
             async_dispatcher_connect(
                 self.hass, f"update_{self._device_id}", self._handle_update
@@ -75,22 +73,21 @@ class DesiBatterySensor(SensorEntity, RestoreEntity):
             self.async_write_ha_state()
 
     @property
-    def device_info(self):
-        """Return device registry information for Home Assistant."""
-        return {
-            "identifiers": {(DOMAIN, self._device_id)},
-            "name": self._data.get("deviceName", "Desi Lock"),
-            "manufacturer": "Desi Smart Lock and Security Systems",
-            "model": self._data.get("deviceModel"),
-            "sw_version": self._data.get("firmwareVersion"),
-            "hw_version": self._data.get("hardwareVersion"),
-            "suggested_area": self._data.get("deviceName")
-        }
-
-    @property
     def native_value(self):
         """Return the state of the sensor (Battery Level)."""
         try:
             return int(self._data.get("batteryLevel", 0))
         except (ValueError, TypeError):
             return None
+
+    @property
+    def device_info(self):
+        """Return device registry information."""
+        return {
+            "identifiers": {(DOMAIN, self._device_id)},
+            "manufacturer": "Desi Smart Lock and Security Systems",
+            "model": self._data.get("deviceModel"),
+            "sw_version": self._data.get("firmwareVersion"),
+            "hw_version": self._data.get("hardwareVersion"),
+            "suggested_area": self._data.get("deviceName")
+        }
