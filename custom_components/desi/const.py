@@ -10,12 +10,12 @@ LOGIN_METHODS = ["phone", "email"]
 DEFAULT_LOGIN_METHOD = "email"
 
 
-AUTH_URI = "https://desiakillirole.com/api/third_part_devices/ds/home_assistant/oauth/authorize"
-TOKEN_URI = "https://desiakillirole.com/api/third_part_devices/ds/home_assistant/token"
+AUTH_URI = "https://c7a7-85-98-10-193.ngrok-free.app/api/third_part_devices/ds/home_assistant/oauth/authorize"
+TOKEN_URI = "https://c7a7-85-98-10-193.ngrok-free.app/api/third_part_devices/ds/home_assistant/token"
 FULLFILMENT_API_URI = (
-    "https://desiakillirole.com/api/third_part_devices/ds/home_assistant/control"
+    "https://c7a7-85-98-10-193.ngrok-free.app/api/third_part_devices/ds/home_assistant/control"
 )
-API_URL = "https://desiakillirole.com"
+API_URL = "https://c7a7-85-98-10-193.ngrok-free.app"
 SOCKET_PATH = "/api/third_part_devices/ds/home_assistant/ws"
 WS_URL = API_URL + SOCKET_PATH
 
