@@ -10,12 +10,12 @@ LOGIN_METHODS = ["phone", "email"]
 DEFAULT_LOGIN_METHOD = "email"
 
 
-AUTH_URI = "https://desiakillirole.com/api/third_part_devices/ds/home_assistant/oauth/authorize"
-TOKEN_URI = "https://desiakillirole.com/api/third_part_devices/ds/home_assistant/token"
+AUTH_URI = "https://desisteely.com/api/third_part_devices/ds/home_assistant/oauth/authorize"
+TOKEN_URI = "https://desisteely.com/api/third_part_devices/ds/home_assistant/token"
 FULLFILMENT_API_URI = (
-    "https://desiakillirole.com/api/third_part_devices/ds/home_assistant/control"
+    "https://desisteely.com/api/third_part_devices/ds/home_assistant/control"
 )
-API_URL = "https://desiakillirole.com"
+API_URL = "https://desisteely.com"
 SOCKET_PATH = "/api/third_part_devices/ds/home_assistant/ws"
 WS_URL = API_URL + SOCKET_PATH
 
