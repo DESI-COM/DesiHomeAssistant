@@ -1,18 +1,15 @@
 """Config flow for Desi OAuth2 integration."""
 
 import logging
-
+import voluptuous as vol
 import jwt  # type: ignore  # noqa: PGH003
 
 from homeassistant.config_entries import ConfigFlowResult
 from homeassistant.helpers import config_entry_oauth2_flow
 
-import voluptuous as vol
-
 from .const import AUTH_URI, DOMAIN, TOKEN_URI
 
 _LOGGER = logging.getLogger(__name__)
-
 
 class DesiConfigFlow(config_entry_oauth2_flow.AbstractOAuth2FlowHandler, domain=DOMAIN):
     """Desi Smart OAuth2 Flow."""
@@ -28,15 +25,15 @@ class DesiConfigFlow(config_entry_oauth2_flow.AbstractOAuth2FlowHandler, domain=
     async def async_step_user(self, user_input=None) -> ConfigFlowResult:
         """Handle a flow initialized by the user from the integrations page."""
         
-        # 1. Eğer kullanıcı henüz formu onaylamadıysa (user_input is None)
+        # 1. ADIM: Kullanıcı entegrasyonu seçtiğinde karşısına boş bir onay formu çıkar.
+        # Bu form, mobil uygulamanın otomatik yönlendirme yapmasını engeller.
         if user_input is None:
             return self.async_show_form(
                 step_id="user",
-                data_schema=vol.Schema({}), # Boş şema sadece bir "Gönder/Devam" butonu çıkarır
-                description_placeholders={"provider": "Desi Smart"}
+                data_schema=vol.Schema({}),
             )
 
-        # 2. Kullanıcı butona bastıysa OAuth işlemlerini başlat
+        # 2. ADIM: Kullanıcı 'GÖNDER' butonuna bastıysa, OAuth implementasyonunu hazırla.
         implementations = await config_entry_oauth2_flow.async_get_implementations(
             self.hass, DOMAIN
         )
@@ -49,19 +46,21 @@ class DesiConfigFlow(config_entry_oauth2_flow.AbstractOAuth2FlowHandler, domain=
                     self.hass, DOMAIN, "", "", AUTH_URI, TOKEN_URI
                 ),
             )
+
             implementations = await config_entry_oauth2_flow.async_get_implementations(
                 self.hass, DOMAIN
             )
 
         self.flow_impl = list(implementations.values())[0]
 
-        # Artık güvenle yönlendirme yapabiliriz
+        # 3. ADIM: Artık tarayıcıyı açması için komut veriyoruz.
+        # Mobil uygulama bu noktada 'OPEN WEBSITE' butonunu gösterecektir.
         return await self.async_step_auth()
 
     async def async_oauth_create_entry(self, data: dict) -> ConfigFlowResult:
         """Create an entry after successful OAuth authentication and token retrieval."""
         try:
-            # Extract the access token from the response data
+            # Token içinden user_id (sub) bilgisini çıkar
             token_data = data["token"]["access_token"]
             decoded = jwt.decode(token_data, options={"verify_signature": False})
             user_id = decoded["sub"]
